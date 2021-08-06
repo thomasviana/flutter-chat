@@ -26,6 +26,7 @@ class Messages extends StatelessWidget {
             itemCount: chatDocs.length,
             itemBuilder: (ctx, index) => MessageBubble(
               chatDocs[index]['text'],
+              chatDocs[index]['username'],
               chatDocs[index]['userId'] == user!.uid,
               key: ValueKey(chatDocs[index].id),
             ),
