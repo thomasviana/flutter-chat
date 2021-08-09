@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat/widgets/auth/auth_form.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _AuthScreenState extends State<AuthScreen> {
     String email,
     String username,
     String password,
-    // File image,
+    File image,
     bool isLogin,
     BuildContext ctx,
   ) async {
@@ -40,13 +41,17 @@ class _AuthScreenState extends State<AuthScreen> {
             .child('user_image')
             .child(authResult.user!.uid + '.jpg');
 
-        // await ref.putFile(image);
+        await ref.putFile(image);
         final url = await ref.getDownloadURL();
 
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user!.uid)
-            .set({'username': username, 'email': email, 'image_url': url});
+            .set({
+          'username': username,
+          'email': email,
+          'image_url': url,
+        });
       }
     } on PlatformException catch (err) {
       var message = 'An error ocurred, please check your credentials.';
